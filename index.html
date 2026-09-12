@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Search Video & Lagu | YouTube, Netflix, Spotify</title>
+<title>YouTube Search | Cari Video & Lagu</title>
 <style>
   * {
     margin: 0;
@@ -23,8 +23,6 @@
     --accent: #ff0033;
     --accent-2: #ff4d6d;
     --yt: #ff0000;
-    --netflix: #e50914;
-    --spotify: #1db954;
   }
 
   body.light-mode {
@@ -76,10 +74,17 @@
     gap: 10px;
     font-size: 1.3rem;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--yt), var(--netflix), var(--spotify));
+    background: linear-gradient(135deg, #ff0000, #ff4d6d, #ff0000);
+    background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     white-space: nowrap;
+    animation: gradientShift 4s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
 
   .logo-icon {
@@ -169,104 +174,12 @@
     border-color: var(--accent);
   }
 
-  /* ===== PLATFORM TABS ===== */
-  .platform-tabs {
-    max-width: 1400px;
-    margin: 20px auto 0;
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding-bottom: 5px;
-    scrollbar-width: none;
-  }
-
-  .platform-tabs::-webkit-scrollbar {
-    display: none;
-  }
-
-  .tab {
-    padding: 10px 20px;
-    border-radius: 50px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .tab:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent);
-  }
-
-  .tab.active {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    border-color: transparent;
-    color: white;
-    box-shadow: 0 5px 20px rgba(255, 0, 51, 0.4);
-  }
-
-  .tab .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  .tab.yt .dot { background: var(--yt); }
-  .tab.netflix .dot { background: var(--netflix); }
-  .tab.spotify .dot { background: var(--spotify); }
-
   /* ===== MAIN ===== */
   main {
     max-width: 1400px;
     margin: 0 auto;
     padding: 30px 20px;
   }
-
-  /* ===== QUICK BUTTONS ===== */
-  .quick-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-    justify-content: center;
-  }
-
-  .quick-btn {
-    padding: 12px 24px;
-    border-radius: 50px;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 0.9rem;
-    transition: all 0.3s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  .quick-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-  }
-
-  .quick-btn.yt-btn { background: linear-gradient(135deg, #ff0000, #cc0000); }
-  .quick-btn.yt-btn:hover { box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5); }
-
-  .quick-btn.netflix-btn { background: linear-gradient(135deg, #e50914, #b20710); }
-  .quick-btn.netflix-btn:hover { box-shadow: 0 10px 30px rgba(229, 9, 20, 0.5); }
-
-  .quick-btn.spotify-btn { background: linear-gradient(135deg, #1db954, #169c46); }
-  .quick-btn.spotify-btn:hover { box-shadow: 0 10px 30px rgba(29, 185, 84, 0.5); }
 
   /* ===== PLAYER ===== */
   .player-container {
@@ -292,7 +205,7 @@
   .player-wrapper {
     position: relative;
     width: 100%;
-    padding-bottom: 56.25%; /* 16:9 */
+    padding-bottom: 56.25%;
     background: #000;
     border-radius: 15px;
     overflow: hidden;
@@ -624,16 +537,6 @@
       font-size: 1rem;
     }
 
-    .platform-tabs {
-      margin-top: 15px;
-      gap: 8px;
-    }
-
-    .tab {
-      padding: 8px 16px;
-      font-size: 0.8rem;
-    }
-
     main {
       padding: 20px 15px;
     }
@@ -641,11 +544,6 @@
     .results-grid {
       grid-template-columns: 1fr;
       gap: 15px;
-    }
-
-    .quick-btn {
-      padding: 10px 18px;
-      font-size: 0.8rem;
     }
 
     .player-info {
@@ -669,13 +567,13 @@
   <div class="header-content">
     <div class="logo">
       <span class="logo-icon">🎬</span>
-      <span class="logo-text">Search Video & Lagu</span>
+      <span class="logo-text">YouTube Search</span>
     </div>
 
     <div class="search-wrapper">
       <div class="search-box">
         <span style="color: var(--text-2); font-size: 1.1rem;">🔍</span>
-        <input type="text" id="searchInput" placeholder="Cari film, lagu, atau video...">
+        <input type="text" id="searchInput" placeholder="Cari video atau lagu...">
         <button class="search-btn" id="searchBtn">
           Cari
         </button>
@@ -684,35 +582,9 @@
 
     <button class="theme-toggle" id="themeToggle" title="Ganti tema">🌙</button>
   </div>
-
-  <!-- Platform Tabs -->
-  <div class="platform-tabs">
-    <button class="tab yt active" data-platform="youtube">
-      <span class="dot"></span> YouTube
-    </button>
-    <button class="tab netflix" data-platform="netflix">
-      <span class="dot"></span> Netflix
-    </button>
-    <button class="tab spotify" data-platform="spotify">
-      <span class="dot"></span> Spotify
-    </button>
-  </div>
 </header>
 
 <main>
-  <!-- Quick Actions -->
-  <div class="quick-actions">
-    <button class="quick-btn yt-btn" onclick="openPlatform('youtube')">
-      ▶ Buka YouTube
-    </button>
-    <button class="quick-btn netflix-btn" onclick="openPlatform('netflix')">
-      ▶ Buka Netflix
-    </button>
-    <button class="quick-btn spotify-btn" onclick="openPlatform('spotify')">
-      ▶ Buka Spotify
-    </button>
-  </div>
-
   <!-- Player -->
   <div class="player-container" id="playerContainer">
     <div class="player-wrapper">
@@ -765,21 +637,16 @@
 
 <script>
 /* ================================================================
-   ⚙️ KONFIGURASI — ISI INI DULU!
+   ⚙️ KONFIGURASI
    ================================================================ */
 
-// 🔑 GANTI DENGAN API KEY KAMU DARI GOOGLE
-// Cara dapetin: https://console.cloud.google.com/apis/credentials
 const YOUTUBE_API_KEY = 'AIzaSyCKRD8H4uYdPBKkz-AMIJ26F5zc8fm5_QY';
-
-// Maksimal hasil yang ditampilkan
 const MAX_RESULTS = 24;
 
 /* ================================================================
-   JANGAN EDIT DI BAWAH INI KECUALI TAU APA YANG KAMU LAKUIN
+   JANGAN EDIT DI BAWAH INI
    ================================================================ */
 
-let currentPlatform = 'youtube';
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const loading = document.getElementById('loading');
@@ -808,30 +675,6 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('searchTheme', isLight ? 'light' : 'dark');
 });
 
-// ===== PLATFORM TABS =====
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const platform = tab.dataset.platform;
-    currentPlatform = platform;
-    
-    // Update active state
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    
-    // Kalau pindah ke Netflix/Spotify, tampilin info
-    if (platform === 'netflix') {
-      showPlatformInfo('netflix');
-    } else if (platform === 'spotify') {
-      showPlatformInfo('spotify');
-    } else {
-      // YouTube: tampilin empty state normal
-      if (!resultsSection.style.display || resultsSection.style.display === 'none') {
-        emptyState.classList.add('active');
-      }
-    }
-  });
-});
-
 // ===== SEARCH =====
 searchBtn.addEventListener('click', performSearch);
 searchInput.addEventListener('keydown', (e) => {
@@ -844,90 +687,12 @@ function performSearch() {
     searchInput.focus();
     return;
   }
-
-  if (currentPlatform === 'youtube') {
-    searchYouTube(query);
-  } else if (currentPlatform === 'netflix') {
-    openNetflixSearch(query);
-  } else if (currentPlatform === 'spotify') {
-    openSpotifySearch(query);
-  }
+  searchYouTube(query);
 }
 
 function quickSearch(query) {
   searchInput.value = query;
-  // Reset ke YouTube
-  currentPlatform = 'youtube';
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('.tab.yt').classList.add('active');
   performSearch();
-}
-
-// ===== OPEN PLATFORM DIRECTLY =====
-function openPlatform(platform) {
-  const query = searchInput.value.trim();
-  if (platform === 'youtube') {
-    if (query) {
-      window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
-    } else {
-      window.open('https://www.youtube.com', '_blank');
-    }
-  } else if (platform === 'netflix') {
-    if (query) {
-      window.open(`https://www.netflix.com/search?q=${encodeURIComponent(query)}`, '_blank');
-    } else {
-      window.open('https://www.netflix.com/browse', '_blank');
-    }
-  } else if (platform === 'spotify') {
-    if (query) {
-      window.open(`https://open.spotify.com/search/${encodeURIComponent(query)}`, '_blank');
-    } else {
-      window.open('https://open.spotify.com', '_blank');
-    }
-  }
-}
-
-// ===== SHOW PLATFORM INFO =====
-function showPlatformInfo(platform) {
-  emptyState.classList.remove('active');
-  resultsSection.style.display = 'none';
-  loading.classList.remove('active');
-
-  const info = {
-    netflix: {
-      icon: '🎬',
-      title: 'Cari di Netflix',
-      desc: 'Netflix gak punya API publik buat search tanpa login. Tapi tenang — ketik judul film di atas, terus klik "Cari", hasilnya bakal muncul di Netflix (tinggal login kalau belum).',
-      btn: 'Buka Netflix Langsung',
-      onclick: () => openPlatform('netflix')
-    },
-    spotify: {
-      icon: '🎵',
-      title: 'Cari di Spotify',
-      desc: 'Spotify punya API resmi tapi butuh OAuth. Ketik nama lagu di atas, klik "Cari", dan kamu bakal di-redirect ke Spotify Web Player buat dengerin lagunya.',
-      btn: 'Buka Spotify Langsung',
-      onclick: () => openPlatform('spotify')
-    }
-  };
-
-  const data = info[platform];
-  if (!data) return;
-
-  resultsGrid.innerHTML = '';
-  resultsSection.style.display = 'block';
-  resultsSection.querySelector('.section-title').innerHTML = data.title;
-  resultCount.textContent = '';
-
-  resultsGrid.innerHTML = `
-    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: var(--card); border-radius: 20px; border: 1px solid var(--border);">
-      <div style="font-size: 5rem; margin-bottom: 20px;">${data.icon}</div>
-      <h2 style="font-size: 1.5rem; margin-bottom: 15px;">${data.title}</h2>
-      <p style="color: var(--text-2); max-width: 500px; margin: 0 auto 25px; line-height: 1.6;">${data.desc}</p>
-      <button class="quick-btn" style="display: inline-flex; padding: 12px 30px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: none;" onclick="(${data.onclick.toString()})()">
-        ${data.btn} →
-      </button>
-    </div>
-  `;
 }
 
 // ===== YOUTUBE SEARCH =====
@@ -947,7 +712,7 @@ async function searchYouTube(query) {
   try {
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${MAX_RESULTS}&q=${encodeURIComponent(query)}&type=video&key=${YOUTUBE_API_KEY}`;
     const response = await fetch(url);
-    
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error?.message || 'Gagal mencari video');
@@ -1041,19 +806,6 @@ function showApiKeyError() {
       <p style="color: var(--text-2); max-width: 600px; margin: 0 auto 20px; line-height: 1.6;">
         Kamu perlu isi <strong>YOUTUBE_API_KEY</strong> di kode buat search video.
       </p>
-      <div style="background: var(--bg-2); border-radius: 15px; padding: 20px; max-width: 600px; margin: 0 auto 20px; text-align: left; border: 1px solid var(--border);">
-        <p style="color: var(--text); font-weight: 600; margin-bottom: 10px;">📋 Cara dapetin API Key (gratis):</p>
-        <ol style="color: var(--text-2); line-height: 2; padding-left: 20px; font-size: 0.9rem;">
-          <li>Buka <a href="https://console.cloud.google.com/" target="_blank" style="color: var(--accent);">Google Cloud Console</a></li>
-          <li>Bikin project baru (nama bebas)</li>
-          <li>Aktifkan <strong>YouTube Data API v3</strong></li>
-          <li>Buka <strong>Credentials</strong> → Create API Key</li>
-          <li>Copy API Key, paste ke kode kamu</li>
-        </ol>
-      </div>
-      <button class="quick-btn" style="display: inline-flex; padding: 12px 30px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: none;" onclick="window.open('https://console.cloud.google.com/apis/credentials', '_blank')">
-        Buka Google Cloud Console →
-      </button>
     </div>
   `;
   resultCount.textContent = '';
