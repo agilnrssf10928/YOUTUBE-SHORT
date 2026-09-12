@@ -47,7 +47,6 @@
     overflow-x: hidden;
   }
 
-  /* ===== SCROLL PROGRESS ===== */
   .scroll-progress {
     position: fixed;
     top: 0;
@@ -88,7 +87,6 @@
     gap: 12px;
   }
 
-  /* ===== MENU BUTTON (☰) ===== */
   .menu-btn {
     background: var(--card);
     border: 1px solid var(--border);
@@ -102,7 +100,6 @@
     justify-content: center;
     transition: all 0.3s;
     flex-shrink: 0;
-    position: relative;
   }
 
   .menu-btn:hover {
@@ -116,7 +113,6 @@
     background: var(--text);
     position: relative;
     border-radius: 2px;
-    transition: all 0.3s;
   }
 
   .menu-btn .hamburger::before,
@@ -127,14 +123,12 @@
     height: 2px;
     background: var(--text);
     border-radius: 2px;
-    transition: all 0.3s;
     left: 0;
   }
 
   .menu-btn .hamburger::before { top: -6px; }
   .menu-btn .hamburger::after { top: 6px; }
 
-  /* ===== LOGO ===== */
   .logo {
     display: flex;
     align-items: center;
@@ -156,7 +150,6 @@
     50% { background-position: 100% 50%; }
   }
 
-  /* ===== SEARCH BAR ===== */
   .search-wrapper {
     flex: 1;
     min-width: 0;
@@ -211,7 +204,6 @@
     box-shadow: 0 5px 20px rgba(255, 0, 51, 0.5);
   }
 
-  /* ===== VISITOR COUNTER ===== */
   .visitor-badge {
     display: flex;
     align-items: center;
@@ -245,7 +237,6 @@
     font-weight: 700;
   }
 
-  /* ===== THEME TOGGLE ===== */
   .theme-toggle {
     background: var(--card);
     border: 1px solid var(--border);
@@ -267,7 +258,7 @@
     border-color: var(--accent);
   }
 
-  /* ===== DRAWER (MENU SLIDE-IN) ===== */
+  /* ===== DRAWER ===== */
   .drawer-overlay {
     position: fixed;
     inset: 0;
@@ -403,7 +394,29 @@
     box-shadow: 0 5px 20px rgba(139, 92, 246, 0.5);
   }
 
-  /* ===== FAVORITES & HISTORY LIST ===== */
+  /* Home button in drawer */
+  .drawer-home-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    border: none;
+    padding: 14px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .drawer-home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255, 0, 51, 0.5);
+  }
+
   .list-item {
     display: flex;
     align-items: center;
@@ -499,7 +512,8 @@
     background: #000;
   }
 
-  .player-wrapper iframe {
+  .player-wrapper iframe,
+  .player-wrapper #ytPlayer {
     position: absolute;
     top: 0;
     left: 0;
@@ -525,7 +539,7 @@
     margin-bottom: 12px;
   }
 
-  /* ===== PLAYER CONTROLS ===== */
+  /* Custom controls */
   .player-controls {
     display: flex;
     gap: 8px;
@@ -563,10 +577,6 @@
     cursor: not-allowed;
   }
 
-  .ctrl-btn.prev-next {
-    background: var(--bg-2);
-  }
-
   .player-actions {
     display: flex;
     gap: 8px;
@@ -592,14 +602,8 @@
     white-space: nowrap;
   }
 
-  .action-btn.red {
-    background: linear-gradient(135deg, #ff0000, #cc0000);
-  }
-
-  .action-btn.green {
-    background: linear-gradient(135deg, #25d366, #128c7e);
-  }
-
+  .action-btn.red { background: linear-gradient(135deg, #ff0000, #cc0000); }
+  .action-btn.green { background: linear-gradient(135deg, #25d366, #128c7e); }
   .action-btn.gray {
     background: var(--card-hover);
     color: var(--text);
@@ -611,7 +615,6 @@
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   }
 
-  /* ===== SECTION TITLE ===== */
   .section-header {
     display: flex;
     justify-content: space-between;
@@ -635,7 +638,6 @@
     font-weight: 500;
   }
 
-  /* ===== LOADING ===== */
   .loading {
     display: none;
     text-align: center;
@@ -841,7 +843,6 @@
     transform: translateY(-2px);
   }
 
-  /* ===== FOOTER ===== */
   footer {
     text-align: center;
     padding: 24px 16px;
@@ -881,7 +882,6 @@
     opacity: 1;
   }
 
-  /* ===== RESPONSIVE ===== */
   @media (max-width: 768px) {
     header { padding: 10px 12px; }
     .header-content { gap: 8px; }
@@ -908,17 +908,14 @@
 
 <header id="mainHeader">
   <div class="header-content">
-    <!-- MENU BUTTON -->
     <button class="menu-btn" id="menuBtn" title="Menu">
       <span class="hamburger"></span>
     </button>
 
-    <!-- LOGO -->
-    <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <div class="logo" onclick="goHome()">
       <span class="logo-text">Video Search</span>
     </div>
 
-    <!-- SEARCH BAR -->
     <div class="search-wrapper">
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="Cari video atau lagu...">
@@ -926,29 +923,31 @@
       </div>
     </div>
 
-    <!-- VISITOR COUNTER -->
     <div class="visitor-badge" title="Total pengunjung">
       <span class="dot"></span>
       <span class="count" id="visitorCount">...</span>
       <span class="label" style="color: var(--text-2); font-size: 0.7rem;">pengunjung</span>
     </div>
 
-    <!-- THEME TOGGLE -->
     <button class="theme-toggle" id="themeToggle" title="Ganti tema">🌙</button>
   </div>
 </header>
 
-<!-- DRAWER OVERLAY -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
 
-<!-- DRAWER MENU -->
 <aside class="drawer" id="drawer">
   <div class="drawer-header">
     <span class="drawer-title">Menu</span>
     <button class="drawer-close" id="drawerClose">✕</button>
   </div>
 
-  <!-- Filter Section -->
+  <!-- HOME BUTTON -->
+  <div class="drawer-section">
+    <button class="drawer-home-btn" id="homeBtn">
+      Home
+    </button>
+  </div>
+
   <div class="drawer-section">
     <span class="drawer-label">Filter Durasi</span>
     <select class="drawer-select" id="durationFilter">
@@ -980,7 +979,6 @@
     <button class="drawer-btn" id="randomBtn">Video Random</button>
   </div>
 
-  <!-- Riwayat Pencarian -->
   <div class="drawer-section">
     <span class="drawer-label">Riwayat Pencarian</span>
     <div id="searchHistoryList">
@@ -989,7 +987,6 @@
     <button class="clear-btn" id="clearSearchHistory">Hapus Riwayat Pencarian</button>
   </div>
 
-  <!-- Riwayat Tonton -->
   <div class="drawer-section">
     <span class="drawer-label">Riwayat Tonton</span>
     <div id="watchHistoryList">
@@ -998,7 +995,6 @@
     <button class="clear-btn" id="clearWatchHistory">Hapus Riwayat Tonton</button>
   </div>
 
-  <!-- Favorit -->
   <div class="drawer-section">
     <span class="drawer-label">Video Favorit</span>
     <div id="favoritesList">
@@ -1008,29 +1004,19 @@
 </aside>
 
 <main>
-  <!-- Player -->
   <div class="player-container" id="playerContainer">
     <div class="player-wrapper">
-      <div id="playerEmbed"></div>
+      <div id="ytPlayer"></div>
     </div>
     <div class="player-info">
       <div class="player-title" id="playerTitle">Judul Video</div>
       <div class="player-channel" id="playerChannel">Channel</div>
 
-      <!-- CUSTOM PLAYER CONTROLS -->
       <div class="player-controls">
-        <button class="ctrl-btn prev-next" id="prevVideoBtn" title="Video Sebelumnya">
-          ⏮ Prev
-        </button>
-        <button class="ctrl-btn" id="rewindBtn" title="Mundur 5 detik">
-          ⏪ 5s
-        </button>
-        <button class="ctrl-btn" id="forwardBtn" title="Maju 5 detik">
-          ⏩ 5s
-        </button>
-        <button class="ctrl-btn prev-next" id="nextVideoBtn" title="Video Selanjutnya">
-          Next ⏭
-        </button>
+        <button class="ctrl-btn" id="prevVideoBtn" title="Video Sebelumnya">⏮ Prev</button>
+        <button class="ctrl-btn" id="rewindBtn" title="Mundur 5 detik">⏪ 5s</button>
+        <button class="ctrl-btn" id="forwardBtn" title="Maju 5 detik">⏩ 5s</button>
+        <button class="ctrl-btn" id="nextVideoBtn" title="Video Selanjutnya">Next ⏭</button>
       </div>
 
       <div class="player-actions">
@@ -1041,13 +1027,11 @@
     </div>
   </div>
 
-  <!-- Loading -->
   <div class="loading" id="loading">
     <div class="spinner"></div>
     <p id="loadingText">Mencari video...</p>
   </div>
 
-  <!-- Results -->
   <div id="resultsSection" style="display: none;">
     <div class="section-header">
       <div class="section-title">
@@ -1057,7 +1041,6 @@
     <div class="results-grid" id="resultsGrid"></div>
   </div>
 
-  <!-- Empty State -->
   <div class="empty-state active" id="emptyState">
     <div class="empty-icon">🎬</div>
     <h2>Mau cari apa hari ini?</h2>
@@ -1079,6 +1062,9 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
 /* ================================================================
    KONFIGURASI
@@ -1096,9 +1082,7 @@ const loadingText = document.getElementById('loadingText');
 const resultsSection = document.getElementById('resultsSection');
 const resultsGrid = document.getElementById('resultsGrid');
 const emptyState = document.getElementById('emptyState');
-const resultCount = document.getElementById('resultCount');
 const playerContainer = document.getElementById('playerContainer');
-const playerEmbed = document.getElementById('playerEmbed');
 const playerTitle = document.getElementById('playerTitle');
 const playerChannel = document.getElementById('playerChannel');
 const openSourceBtn = document.getElementById('openSourceBtn');
@@ -1114,6 +1098,7 @@ const menuBtn = document.getElementById('menuBtn');
 const drawer = document.getElementById('drawer');
 const drawerOverlay = document.getElementById('drawerOverlay');
 const drawerClose = document.getElementById('drawerClose');
+const homeBtn = document.getElementById('homeBtn');
 const toast = document.getElementById('toast');
 const prevVideoBtn = document.getElementById('prevVideoBtn');
 const nextVideoBtn = document.getElementById('nextVideoBtn');
@@ -1130,13 +1115,63 @@ let currentResults = [];
 let currentIndex = -1;
 let ytPlayer = null;
 let ytPlayerReady = false;
+let pendingVideoId = null;
+
+/* ================================================================
+   YOUTUBE IFRAME API
+   ================================================================ */
+function onYouTubeIframeAPIReady() {
+  // API ready — nothing to do until play
+  console.log('YouTube IFrame API ready');
+}
+
+function loadPlayer(videoId) {
+  // Kalau player udah ada, tinggal load video baru
+  if (ytPlayer && ytPlayerReady) {
+    ytPlayer.loadVideoById(videoId);
+    return;
+  }
+
+  // Kalau belum ada player, bikin baru
+  if (!ytPlayer) {
+    ytPlayer = new YT.Player('ytPlayer', {
+      height: '100%',
+      width: '100%',
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        rel: 0,
+        modestbranding: 1,
+        enablejsapi: 1,
+        origin: window.location.origin
+      },
+      events: {
+        onReady: (event) => {
+          ytPlayerReady = true;
+          event.target.playVideo();
+        },
+        onStateChange: (event) => {
+          // Auto-play next kalau video selesai
+          if (event.data === YT.PlayerState.ENDED) {
+            if (currentIndex < currentResults.length - 1) {
+              setTimeout(() => playVideoByIndex(currentIndex + 1), 800);
+            }
+          }
+        }
+      }
+    });
+  } else {
+    // Player exists tapi belum ready, tunggu
+    pendingVideoId = videoId;
+  }
+}
 
 /* ================================================================
    VISITOR COUNTER
    ================================================================ */
 const BIN_ID = '6aa4c138ac6210605ac326ed';
 const BIN_API_KEY = '$2a$10$bOKvfa8ndFjHR8AnZ9pTWuWG/KrHuOjI7zuBna8XzdhS80d2Z3ZOO';
-const SESSION_FLAG = 'hasVisited_video_search_v3';
+const SESSION_FLAG = 'hasVisited_video_search_v4';
 
 async function initVisitorCounter() {
   const countEl = document.getElementById('visitorCount');
@@ -1220,7 +1255,7 @@ themeToggle.addEventListener('click', () => {
 });
 
 /* ================================================================
-   DRAWER (MENU)
+   DRAWER
    ================================================================ */
 function openDrawer() {
   drawer.classList.add('active');
@@ -1237,6 +1272,44 @@ function closeDrawer() {
 menuBtn.addEventListener('click', openDrawer);
 drawerClose.addEventListener('click', closeDrawer);
 drawerOverlay.addEventListener('click', closeDrawer);
+
+/* ================================================================
+   HOME BUTTON
+   ================================================================ */
+function goHome() {
+  // Stop & close player
+  if (ytPlayer && ytPlayerReady) {
+    try { ytPlayer.stopVideo(); } catch {}
+  }
+
+  // Sembunyiin player
+  playerContainer.classList.remove('active');
+
+  // Reset state
+  currentResults = [];
+  currentIndex = -1;
+
+  // Sembunyiin hasil
+  resultsSection.style.display = 'none';
+  resultsGrid.innerHTML = '';
+
+  // Clear search input
+  searchInput.value = '';
+
+  // Sembunyiin loading
+  loading.classList.remove('active');
+
+  // Show empty state
+  emptyState.classList.add('active');
+
+  // Scroll ke atas
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Close drawer kalau kebuka
+  closeDrawer();
+}
+
+homeBtn.addEventListener('click', goHome);
 
 /* ================================================================
    TOAST
@@ -1309,11 +1382,11 @@ randomBtn.addEventListener('click', () => {
 });
 
 /* ================================================================
-   STORAGE HELPERS
+   STORAGE
    ================================================================ */
-const SEARCH_HISTORY_KEY = 'video_search_history_v3';
-const WATCH_HISTORY_KEY = 'video_watch_history_v3';
-const FAV_KEY = 'video_favorites_v3';
+const SEARCH_HISTORY_KEY = 'video_search_history_v4';
+const WATCH_HISTORY_KEY = 'video_watch_history_v4';
+const FAV_KEY = 'video_favorites_v4';
 const MAX_HISTORY = 8;
 const MAX_WATCH = 20;
 
@@ -1391,14 +1464,9 @@ function renderWatchHistory() {
       <span class="list-item-title">${escapeHtml(video.title)}</span>
     `;
     item.addEventListener('click', () => {
-      // Cari video ini di currentResults kalau ada
       const idx = currentResults.findIndex(v => v.id === video.id);
-      if (idx !== -1) {
-        playVideoByIndex(idx);
-      } else {
-        // Play standalone
-        playStandalone(video);
-      }
+      if (idx !== -1) playVideoByIndex(idx);
+      else playStandalone(video);
       closeDrawer();
     });
     watchHistoryList.appendChild(item);
@@ -1507,7 +1575,6 @@ async function searchVideos(query) {
 
     const data = await response.json();
 
-    // Get details
     const videoIds = data.items.map(i => i.id.videoId).join(',');
     const detailResp = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=${videoIds}&key=${API_KEY}`
@@ -1662,18 +1729,8 @@ function playStandalone(video) {
 }
 
 function playVideo(video, saveHistory = true) {
-  // Load YouTube iframe
-  playerEmbed.innerHTML = `
-    <iframe
-      id="ytIframe"
-      src="https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&enablejsapi=1"
-      allowfullscreen
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;">
-    </iframe>
-  `;
-
-  ytPlayerReady = false;
+  // Load video via API
+  loadPlayer(video.id);
 
   // Update info
   playerTitle.textContent = video.title;
@@ -1697,7 +1754,9 @@ function playVideo(video, saveHistory = true) {
 }
 
 function closePlayerNow() {
-  playerEmbed.innerHTML = '';
+  if (ytPlayer && ytPlayerReady) {
+    try { ytPlayer.stopVideo(); } catch {}
+  }
   playerContainer.classList.remove('active');
   document.querySelectorAll('.video-card').forEach(c => c.classList.remove('active-playing'));
 }
@@ -1705,18 +1764,8 @@ function closePlayerNow() {
 closePlayer.addEventListener('click', closePlayerNow);
 
 /* ================================================================
-   PLAYER CONTROLS (via YouTube iframe API postMessage)
+   PLAYER CONTROLS
    ================================================================ */
-function postToPlayer(func, args = []) {
-  const iframe = document.getElementById('ytIframe');
-  if (!iframe || !iframe.contentWindow) return;
-  iframe.contentWindow.postMessage(JSON.stringify({
-    event: 'command',
-    func: func,
-    args: args
-  }), '*');
-}
-
 function updateNavButtons() {
   prevVideoBtn.disabled = currentIndex <= 0;
   nextVideoBtn.disabled = currentIndex < 0 || currentIndex >= currentResults.length - 1;
@@ -1731,48 +1780,41 @@ nextVideoBtn.addEventListener('click', () => {
 });
 
 rewindBtn.addEventListener('click', () => {
-  postToPlayer('seekTo', [getCurrentTime() - 5, true]);
-  showToast('Mundur 5 detik');
-});
-
-forwardBtn.addEventListener('click', () => {
-  postToPlayer('seekTo', [getCurrentTime() + 5, true]);
-  showToast('Maju 5 detik');
-});
-
-// Track current time via postMessage listener
-let currentPlayerTime = 0;
-
-window.addEventListener('message', (e) => {
-  if (typeof e.data === 'string') {
-    try {
-      const data = JSON.parse(e.data);
-      if (data.event === 'infoDelivery' && data.info) {
-        if (typeof data.info.currentTime === 'number') {
-          currentPlayerTime = data.info.currentTime;
-        }
-      }
-      if (data.event === 'onReady') {
-        ytPlayerReady = true;
-        // Enable JS API
-        postToPlayer('addEventListener', ['onStateChange']);
-        // Start listening for time updates
-        setInterval(() => {
-          postToPlayer('getCurrentTime');
-        }, 500);
-      }
-      if (data.event === 'onStateChange' && data.info === 0) {
-        // Video ended (0 = ended)
-        if (currentIndex < currentResults.length - 1) {
-          setTimeout(() => playVideoByIndex(currentIndex + 1), 1000);
-        }
-      }
-    } catch {}
+  if (!ytPlayer || !ytPlayerReady) {
+    showToast('Player belum siap, tunggu sebentar');
+    return;
+  }
+  try {
+    const currentTime = ytPlayer.getCurrentTime();
+    const newTime = Math.max(0, currentTime - 5);
+    ytPlayer.seekTo(newTime, true);
+    showToast(`Mundur 5 detik (${formatTime(newTime)})`);
+  } catch (e) {
+    console.error(e);
   }
 });
 
-function getCurrentTime() {
-  return Math.max(0, currentPlayerTime);
+forwardBtn.addEventListener('click', () => {
+  if (!ytPlayer || !ytPlayerReady) {
+    showToast('Player belum siap, tunggu sebentar');
+    return;
+  }
+  try {
+    const currentTime = ytPlayer.getCurrentTime();
+    const duration = ytPlayer.getDuration();
+    let newTime = currentTime + 5;
+    if (newTime > duration) newTime = duration - 1;
+    ytPlayer.seekTo(newTime, true);
+    showToast(`Maju 5 detik (${formatTime(newTime)})`);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${String(s).padStart(2, '0')}`;
 }
 
 /* ================================================================
