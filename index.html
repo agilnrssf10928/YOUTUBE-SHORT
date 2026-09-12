@@ -23,6 +23,7 @@
     --accent: #ff0033;
     --accent-2: #ff4d6d;
     --yt: #ff0000;
+    --shadow-glow: rgba(255, 0, 51, 0.4);
   }
 
   body.light-mode {
@@ -33,7 +34,10 @@
     --text: #0f0f0f;
     --text-2: #606060;
     --border: #e0e0e0;
+    --shadow-glow: rgba(255, 0, 51, 0.3);
   }
+
+  html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
@@ -52,11 +56,15 @@
     backdrop-filter: blur(15px);
     border-bottom: 1px solid var(--border);
     padding: 15px 20px;
-    transition: background 0.4s;
+    transition: background 0.4s, box-shadow 0.3s;
   }
 
   body.light-mode header {
     background: rgba(245, 245, 245, 0.95);
+  }
+
+  header.scrolled {
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
   }
 
   .header-content {
@@ -68,6 +76,7 @@
     flex-wrap: wrap;
   }
 
+  /* ===== LOGO ===== */
   .logo {
     display: flex;
     align-items: center;
@@ -80,7 +89,11 @@
     -webkit-text-fill-color: transparent;
     white-space: nowrap;
     animation: gradientShift 4s ease infinite;
+    cursor: pointer;
+    transition: transform 0.3s;
   }
+
+  .logo:hover { transform: scale(1.05); }
 
   @keyframes gradientShift {
     0%, 100% { background-position: 0% 50%; }
@@ -90,13 +103,18 @@
   .logo-icon {
     font-size: 1.6rem;
     filter: drop-shadow(0 0 10px rgba(255, 0, 51, 0.5));
+    animation: pulse-icon 2.5s ease-in-out infinite;
   }
 
-  /* ===== SEARCH BAR ===== */
+  @keyframes pulse-icon {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  /* ===== SEARCH BAR (TANPA ICON) ===== */
   .search-wrapper {
     flex: 1;
     min-width: 250px;
-    position: relative;
   }
 
   .search-box {
@@ -105,14 +123,15 @@
     background: var(--bg-2);
     border: 1px solid var(--border);
     border-radius: 50px;
-    padding: 8px 8px 8px 20px;
-    transition: all 0.3s;
+    padding: 8px 8px 8px 25px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   }
 
   .search-box:focus-within {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(255, 0, 51, 0.15), 0 8px 30px rgba(255, 0, 51, 0.2);
+    transform: scale(1.02);
   }
 
   #searchInput {
@@ -134,25 +153,85 @@
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: white;
     border: none;
-    padding: 12px 24px;
+    padding: 12px 28px;
     border-radius: 50px;
     cursor: pointer;
     font-weight: 600;
     font-size: 0.95rem;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     white-space: nowrap;
+    position: relative;
+    overflow: hidden;
   }
+
+  .search-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s;
+  }
+
+  .search-btn:hover::before { left: 100%; }
 
   .search-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 5px 25px rgba(255, 0, 51, 0.5);
   }
 
-  .search-btn:active {
-    transform: scale(0.98);
+  .search-btn:active { transform: scale(0.98); }
+
+  /* ===== VISITOR COUNTER ===== */
+  .visitor-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 50px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    transition: all 0.3s;
+    white-space: nowrap;
+    cursor: default;
+  }
+
+  .visitor-badge:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 20px var(--shadow-glow);
+  }
+
+  .visitor-badge .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+    animation: pulse-dot 2s infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.5); }
+  }
+
+  .visitor-badge .count {
+    background: linear-gradient(135deg, var(--yt), var(--accent-2));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    font-size: 0.95rem;
+    min-width: 20px;
+    text-align: center;
+    animation: gradientShift 3s ease infinite;
   }
 
   /* Theme toggle */
@@ -172,6 +251,7 @@
   .theme-toggle:hover {
     transform: rotate(180deg) scale(1.1);
     border-color: var(--accent);
+    box-shadow: 0 5px 20px var(--shadow-glow);
   }
 
   /* ===== MAIN ===== */
@@ -190,16 +270,14 @@
     padding: 20px;
     border: 1px solid var(--border);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    animation: slideDown 0.5s ease;
+    animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
-  .player-container.active {
-    display: block;
-  }
+  .player-container.active { display: block; }
 
   @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
 
   .player-wrapper {
@@ -242,6 +320,33 @@
     margin-top: 4px;
   }
 
+  .player-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .open-yt-btn {
+    background: linear-gradient(135deg, #ff0000, #cc0000);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .open-yt-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255, 0, 0, 0.4);
+  }
+
   .close-player {
     background: var(--card-hover);
     border: 1px solid var(--border);
@@ -258,6 +363,7 @@
     background: var(--accent);
     border-color: var(--accent);
     color: white;
+    transform: scale(1.05);
   }
 
   /* ===== SECTION TITLE ===== */
@@ -268,6 +374,7 @@
     margin-bottom: 20px;
     flex-wrap: wrap;
     gap: 10px;
+    animation: fadeInUp 0.5s ease;
   }
 
   .section-title {
@@ -284,6 +391,11 @@
     font-weight: 500;
   }
 
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ===== LOADING ===== */
   .loading {
     display: none;
@@ -293,6 +405,7 @@
 
   .loading.active {
     display: block;
+    animation: fadeInUp 0.4s ease;
   }
 
   .spinner {
@@ -312,6 +425,12 @@
   .loading p {
     color: var(--text-2);
     font-size: 1rem;
+    animation: pulse-text 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-text {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
   }
 
   /* ===== RESULTS GRID ===== */
@@ -326,11 +445,11 @@
     border-radius: 15px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 1px solid var(--border);
     opacity: 0;
-    transform: translateY(20px);
-    animation: cardAppear 0.5s ease forwards;
+    transform: translateY(30px);
+    animation: cardAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   }
 
   @keyframes cardAppear {
@@ -338,9 +457,9 @@
   }
 
   .video-card:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-10px) scale(1.03);
     background: var(--card-hover);
-    box-shadow: 0 20px 40px rgba(255, 0, 51, 0.2);
+    box-shadow: 0 25px 50px rgba(255, 0, 51, 0.25);
     border-color: var(--accent);
   }
 
@@ -359,11 +478,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .video-card:hover .thumbnail-wrapper img {
-    transform: scale(1.1);
+    transform: scale(1.15);
   }
 
   .play-overlay {
@@ -377,9 +496,7 @@
     transition: opacity 0.3s;
   }
 
-  .video-card:hover .play-overlay {
-    opacity: 1;
-  }
+  .video-card:hover .play-overlay { opacity: 1; }
 
   .play-icon {
     width: 60px;
@@ -392,10 +509,10 @@
     color: white;
     font-size: 1.5rem;
     box-shadow: 0 0 30px rgba(255, 0, 51, 0.6);
-    animation: pulsePlay 1.5s infinite;
+    animation: pulse-play 1.5s infinite;
   }
 
-  @keyframes pulsePlay {
+  @keyframes pulse-play {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
   }
@@ -428,11 +545,10 @@
     text-align: center;
     padding: 80px 20px;
     display: none;
+    animation: fadeInUp 0.6s ease;
   }
 
-  .empty-state.active {
-    display: block;
-  }
+  .empty-state.active { display: block; }
 
   .empty-icon {
     font-size: 5rem;
@@ -441,8 +557,8 @@
   }
 
   @keyframes floatIcon {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
   }
 
   .empty-state h2 {
@@ -474,14 +590,15 @@
     color: var(--text);
     cursor: pointer;
     font-size: 0.85rem;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .chip:hover {
     background: var(--accent);
     color: white;
     border-color: var(--accent);
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px var(--shadow-glow);
   }
 
   /* ===== FOOTER ===== */
@@ -497,87 +614,53 @@
   footer a {
     color: var(--accent);
     text-decoration: none;
+    transition: color 0.3s;
   }
+
+  footer a:hover { color: var(--accent-2); }
 
   /* ===== RESPONSIVE ===== */
   @media (max-width: 768px) {
-    header {
-      padding: 12px 15px;
-    }
-
-    .header-content {
-      gap: 12px;
-    }
-
-    .logo {
-      font-size: 1rem;
-    }
-
-    .logo span.logo-text {
-      display: none;
-    }
-
-    .search-box {
-      padding: 6px 6px 6px 15px;
-    }
-
-    #searchInput {
-      font-size: 0.9rem;
-      padding: 6px 8px;
-    }
-
-    .search-btn {
-      padding: 10px 16px;
-      font-size: 0.85rem;
-    }
-
-    .theme-toggle {
-      width: 40px;
-      height: 40px;
-      font-size: 1rem;
-    }
-
-    main {
-      padding: 20px 15px;
-    }
-
-    .results-grid {
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-
-    .player-info {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .close-player {
-      width: 100%;
-    }
-
-    .section-title {
-      font-size: 1.1rem;
-    }
+    header { padding: 12px 15px; }
+    .header-content { gap: 12px; }
+    .logo { font-size: 1rem; }
+    .logo span.logo-text { display: none; }
+    .search-box { padding: 6px 6px 6px 18px; }
+    #searchInput { font-size: 0.9rem; padding: 6px 8px; }
+    .search-btn { padding: 10px 18px; font-size: 0.85rem; }
+    .visitor-badge { padding: 8px 12px; font-size: 0.75rem; }
+    .visitor-badge .count { font-size: 0.85rem; }
+    .theme-toggle { width: 40px; height: 40px; font-size: 1rem; }
+    main { padding: 20px 15px; }
+    .results-grid { grid-template-columns: 1fr; gap: 15px; }
+    .player-info { flex-direction: column; align-items: flex-start; }
+    .player-actions { width: 100%; }
+    .player-actions button, .player-actions a { flex: 1; justify-content: center; }
+    .section-title { font-size: 1.1rem; }
   }
 </style>
 </head>
 <body>
 
-<header>
+<header id="mainHeader">
   <div class="header-content">
-    <div class="logo">
+    <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
       <span class="logo-icon">🎬</span>
       <span class="logo-text">YouTube Search</span>
     </div>
 
     <div class="search-wrapper">
       <div class="search-box">
-        <span style="color: var(--text-2); font-size: 1.1rem;">🔍</span>
         <input type="text" id="searchInput" placeholder="Cari video atau lagu...">
-        <button class="search-btn" id="searchBtn">
-          Cari
-        </button>
+        <button class="search-btn" id="searchBtn">Cari</button>
       </div>
+    </div>
+
+    <!-- VISITOR COUNTER -->
+    <div class="visitor-badge" title="Total pengunjung website">
+      <span class="dot"></span>
+      <span class="count" id="visitorCount">...</span>
+      <span style="color: var(--text-2); font-size: 0.75rem;">pengunjung</span>
     </div>
 
     <button class="theme-toggle" id="themeToggle" title="Ganti tema">🌙</button>
@@ -595,14 +678,19 @@
         <div class="player-title" id="playerTitle">Judul Video</div>
         <div class="player-channel" id="playerChannel">Channel</div>
       </div>
-      <button class="close-player" id="closePlayer">✕ Tutup Player</button>
+      <div class="player-actions">
+        <a href="#" id="openYouTubeBtn" class="open-yt-btn" target="_blank">
+          ▶ Tonton di YouTube
+        </a>
+        <button class="close-player" id="closePlayer">✕ Tutup</button>
+      </div>
     </div>
   </div>
 
   <!-- Loading -->
   <div class="loading" id="loading">
     <div class="spinner"></div>
-    <p>Mencari video...</p>
+    <p id="loadingText">Mencari video...</p>
   </div>
 
   <!-- Results -->
@@ -644,12 +732,13 @@ const YOUTUBE_API_KEY = 'AIzaSyCKRD8H4uYdPBKkz-AMIJ26F5zc8fm5_QY';
 const MAX_RESULTS = 24;
 
 /* ================================================================
-   JANGAN EDIT DI BAWAH INI
+   ELEMEN
    ================================================================ */
 
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const loading = document.getElementById('loading');
+const loadingText = document.getElementById('loadingText');
 const resultsSection = document.getElementById('resultsSection');
 const resultsGrid = document.getElementById('resultsGrid');
 const emptyState = document.getElementById('emptyState');
@@ -658,10 +747,102 @@ const playerContainer = document.getElementById('playerContainer');
 const playerFrame = document.getElementById('playerFrame');
 const playerTitle = document.getElementById('playerTitle');
 const playerChannel = document.getElementById('playerChannel');
+const openYouTubeBtn = document.getElementById('openYouTubeBtn');
 const closePlayer = document.getElementById('closePlayer');
 const themeToggle = document.getElementById('themeToggle');
 
-// ===== THEME TOGGLE =====
+/* ================================================================
+   VISITOR COUNTER (JSONBin.io)
+   ================================================================ */
+const BIN_ID = '6aa4c138ac6210605ac326ed';
+const API_KEY = '$2a$10$bOKvfa8ndFjHR8AnZ9pTWuWG/KrHuOjI7zuBna8XzdhS80d2Z3ZOO';
+const SESSION_FLAG = 'hasVisited_youtube_search_v1';
+
+async function initVisitorCounter() {
+  const countEl = document.getElementById('visitorCount');
+  if (!countEl) return;
+
+  try {
+    const alreadyVisited = sessionStorage.getItem(SESSION_FLAG);
+    const getResp = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    if (!getResp.ok) throw new Error('Gagal ambil data');
+    const getData = await getResp.json();
+    let current = (getData.record && getData.record.visits) ? getData.record.visits : 0;
+
+    if (!alreadyVisited) {
+      current = current + 1;
+      const putResp = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': API_KEY
+        },
+        body: JSON.stringify({ visits: current })
+      });
+      if (!putResp.ok) throw new Error('Gagal update');
+      sessionStorage.setItem(SESSION_FLAG, 'true');
+    }
+    animateCount(countEl, current);
+  } catch (error) {
+    console.error('Counter error:', error);
+    const fallback = parseInt(localStorage.getItem('fallbackVisits') || '0', 10);
+    const newFallback = fallback + 1;
+    localStorage.setItem('fallbackVisits', newFallback);
+    countEl.textContent = newFallback;
+  }
+}
+
+function animateCount(el, target) {
+  const duration = 1500;
+  const start = 0;
+  const startTime = performance.now();
+
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(start + (target - start) * eased);
+    el.textContent = current.toLocaleString('id-ID');
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      el.textContent = target.toLocaleString('id-ID');
+      el.style.animation = 'none';
+      setTimeout(() => {
+        el.style.animation = 'bounceCount 0.5s ease';
+      }, 10);
+    }
+  }
+  requestAnimationFrame(update);
+}
+
+// Bounce keyframes
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes bounceCount {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+`;
+document.head.appendChild(style);
+
+initVisitorCounter();
+
+/* ================================================================
+   HEADER SHADOW ON SCROLL
+   ================================================================ */
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('mainHeader');
+  if (header) {
+    header.classList.toggle('scrolled', window.pageYOffset > 50);
+  }
+});
+
+/* ================================================================
+   THEME TOGGLE
+   ================================================================ */
 const savedTheme = localStorage.getItem('searchTheme') || 'dark';
 if (savedTheme === 'light') {
   document.body.classList.add('light-mode');
@@ -675,7 +856,9 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('searchTheme', isLight ? 'light' : 'dark');
 });
 
-// ===== SEARCH =====
+/* ================================================================
+   SEARCH
+   ================================================================ */
 searchBtn.addEventListener('click', performSearch);
 searchInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') performSearch();
@@ -695,19 +878,37 @@ function quickSearch(query) {
   performSearch();
 }
 
-// ===== YOUTUBE SEARCH =====
+/* ================================================================
+   YOUTUBE SEARCH
+   ================================================================ */
+const loadingMessages = [
+  'Mencari video...',
+  'Mengambil hasil...',
+  'Menyiapkan tampilan...',
+  'Hampir selesai...'
+];
+
 async function searchYouTube(query) {
-  // Validasi API Key
-  if (YOUTUBE_API_KEY === 'GANTI_DENGAN_API_KEY_KAMU' || !YOUTUBE_API_KEY) {
+  if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'GANTI_DENGAN_API_KEY_KAMU') {
     showApiKeyError();
     return;
   }
 
-  // Show loading
   emptyState.classList.remove('active');
   resultsSection.style.display = 'none';
   playerContainer.classList.remove('active');
   loading.classList.add('active');
+
+  let msgIndex = 0;
+  loadingText.textContent = loadingMessages[0];
+  const msgInterval = setInterval(() => {
+    msgIndex = (msgIndex + 1) % loadingMessages.length;
+    loadingText.style.opacity = '0';
+    setTimeout(() => {
+      loadingText.textContent = loadingMessages[msgIndex];
+      loadingText.style.opacity = '1';
+    }, 200);
+  }, 800);
 
   try {
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${MAX_RESULTS}&q=${encodeURIComponent(query)}&type=video&key=${YOUTUBE_API_KEY}`;
@@ -719,6 +920,7 @@ async function searchYouTube(query) {
     }
 
     const data = await response.json();
+    clearInterval(msgInterval);
     loading.classList.remove('active');
 
     if (!data.items || data.items.length === 0) {
@@ -729,18 +931,21 @@ async function searchYouTube(query) {
     displayResults(data.items, query);
 
   } catch (error) {
+    clearInterval(msgInterval);
     loading.classList.remove('active');
     console.error('YouTube search error:', error);
     showError(error.message);
   }
 }
 
-// ===== DISPLAY RESULTS =====
+/* ================================================================
+   DISPLAY RESULTS
+   ================================================================ */
 function displayResults(items, query) {
   resultsGrid.innerHTML = '';
-  resultCount.textContent = `(${items.length} video untuk "${query}")`;
   resultsSection.style.display = 'block';
-  resultsSection.querySelector('.section-title').innerHTML = `Hasil Pencarian <span class="count" id="resultCount">${items.length} video untuk "${query}"</span>`;
+  resultsSection.querySelector('.section-title').innerHTML =
+    `Hasil Pencarian <span class="count">(${items.length} video untuk "${escapeHtml(query)}")</span>`;
 
   items.forEach((item, index) => {
     const videoId = item.id.videoId;
@@ -753,7 +958,7 @@ function displayResults(items, query) {
     card.style.animationDelay = (index * 0.05) + 's';
     card.innerHTML = `
       <div class="thumbnail-wrapper">
-        <img src="${thumbnail}" alt="${title}" loading="lazy">
+        <img src="${thumbnail}" alt="${escapeHtml(title)}" loading="lazy">
         <div class="play-overlay">
           <div class="play-icon">▶</div>
         </div>
@@ -768,39 +973,51 @@ function displayResults(items, query) {
     resultsGrid.appendChild(card);
   });
 
-  // Scroll ke hasil
   setTimeout(() => {
     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
 }
 
-// ===== PLAY VIDEO =====
+/* ================================================================
+   PLAY VIDEO
+   ================================================================ */
 function playVideo(videoId, title, channel) {
+  // Embed video
   playerFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+
+  // Info
   playerTitle.textContent = title;
   playerChannel.textContent = `📺 ${channel}`;
+
+  // Tombol "Tonton di YouTube" — buat kasus video gak bisa di-embed
+  openYouTubeBtn.href = `https://www.youtube.com/watch?v=${videoId}`;
+
+  // Show player
   playerContainer.classList.add('active');
   playerContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ===== CLOSE PLAYER =====
 closePlayer.addEventListener('click', () => {
   playerFrame.src = '';
   playerContainer.classList.remove('active');
 });
 
-// ===== UTILITY: ESCAPE HTML =====
+/* ================================================================
+   UTILITY
+   ================================================================ */
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
 }
 
-// ===== ERROR STATES =====
+/* ================================================================
+   ERROR STATES
+   ================================================================ */
 function showApiKeyError() {
   resultsSection.style.display = 'block';
   resultsGrid.innerHTML = `
-    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: var(--card); border-radius: 20px; border: 1px solid var(--border);">
+    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: var(--card); border-radius: 20px; border: 1px solid var(--border); animation: fadeInUp 0.5s ease;">
       <div style="font-size: 5rem; margin-bottom: 20px;">🔑</div>
       <h2 style="font-size: 1.5rem; margin-bottom: 15px; color: #ff5252;">API Key Belum Diisi</h2>
       <p style="color: var(--text-2); max-width: 600px; margin: 0 auto 20px; line-height: 1.6;">
@@ -808,38 +1025,37 @@ function showApiKeyError() {
       </p>
     </div>
   `;
-  resultCount.textContent = '';
   resultsSection.querySelector('.section-title').innerHTML = 'Setup Required';
 }
 
 function showNoResults(query) {
   resultsSection.style.display = 'block';
   resultsGrid.innerHTML = `
-    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; animation: fadeInUp 0.5s ease;">
       <div style="font-size: 4rem; margin-bottom: 15px;">🔍</div>
       <h2 style="font-size: 1.3rem; margin-bottom: 10px;">Gak ada hasil untuk "${escapeHtml(query)}"</h2>
       <p style="color: var(--text-2);">Coba kata kunci lain ya!</p>
     </div>
   `;
-  resultCount.textContent = '';
   resultsSection.querySelector('.section-title').innerHTML = 'Hasil Pencarian';
 }
 
 function showError(message) {
   resultsSection.style.display = 'block';
   resultsGrid.innerHTML = `
-    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: var(--card); border-radius: 20px; border: 1px solid var(--border);">
+    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: var(--card); border-radius: 20px; border: 1px solid var(--border); animation: fadeInUp 0.5s ease;">
       <div style="font-size: 4rem; margin-bottom: 15px;">⚠️</div>
       <h2 style="font-size: 1.3rem; margin-bottom: 10px;">Terjadi Kesalahan</h2>
       <p style="color: var(--text-2); max-width: 500px; margin: 0 auto; line-height: 1.6;">${escapeHtml(message)}</p>
       <p style="color: var(--text-2); font-size: 0.85rem; margin-top: 15px;">💡 Pastikan API Key udah bener & quota belum habis</p>
     </div>
   `;
-  resultCount.textContent = '';
   resultsSection.querySelector('.section-title').innerHTML = 'Error';
 }
 
-// ===== FOCUS INPUT ON LOAD =====
+/* ================================================================
+   FOCUS INPUT ON LOAD
+   ================================================================ */
 window.addEventListener('load', () => {
   setTimeout(() => searchInput.focus(), 300);
 });
