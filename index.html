@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouTube Search | Cari Video & Lagu</title>
+<title>Video Search | Cari Video & Lagu</title>
 <style>
   * {
     margin: 0;
@@ -646,7 +646,7 @@
   <div class="header-content">
     <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
       <span class="logo-icon">🎬</span>
-      <span class="logo-text">YouTube Search</span>
+      <span class="logo-text">Video Search</span>
     </div>
 
     <div class="search-wrapper">
@@ -879,7 +879,7 @@ function quickSearch(query) {
 }
 
 /* ================================================================
-   YOUTUBE SEARCH
+   VIDEO SEARCH
    ================================================================ */
 const loadingMessages = [
   'Mencari video...',
@@ -933,7 +933,7 @@ async function searchYouTube(query) {
   } catch (error) {
     clearInterval(msgInterval);
     loading.classList.remove('active');
-    console.error('YouTube search error:', error);
+    console.error('Video search error:', error);
     showError(error.message);
   }
 }
